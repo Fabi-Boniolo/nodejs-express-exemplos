@@ -16,7 +16,7 @@
   \**********************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var express__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! express */ \"express\");\n/* harmony import */ var express__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(express__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _modules_user_userController__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/user/userController */ \"./src/modules/user/userController.js\");\n/* harmony import */ var _modules_post_postController__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/post/postController */ \"./src/modules/post/postController.js\");\n\r\n\r\nconst app = express__WEBPACK_IMPORTED_MODULE_0__()\r\napp.use(express__WEBPACK_IMPORTED_MODULE_0__.json())\r\n\r\n;\r\n\r\n\r\napp.use('/user', _modules_user_userController__WEBPACK_IMPORTED_MODULE_1__[\"default\"])\r\napp.use('/post', _modules_post_postController__WEBPACK_IMPORTED_MODULE_2__[\"default\"])\r\n\r\n\r\n\r\napp.listen(3000, ()=> console.log(`ONLINE http://localhost:3000`))\n\n//# sourceURL=webpack://nodejs-express-exemplos/./src/index.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var express__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! express */ \"express\");\n/* harmony import */ var express__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(express__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var cookie_parser__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! cookie-parser */ \"cookie-parser\");\n/* harmony import */ var cookie_parser__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(cookie_parser__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var _modules_user_userController__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/user/userController */ \"./src/modules/user/userController.js\");\n/* harmony import */ var _modules_post_postController__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/post/postController */ \"./src/modules/post/postController.js\");\n\r\n\r\n\r\nconst app = express__WEBPACK_IMPORTED_MODULE_0__()\r\napp.use(express__WEBPACK_IMPORTED_MODULE_0__.json())\r\napp.use(cookie_parser__WEBPACK_IMPORTED_MODULE_1__())\r\n\r\n;\r\n\r\n\r\napp.use('/user', _modules_user_userController__WEBPACK_IMPORTED_MODULE_2__[\"default\"])\r\napp.use('/post', _modules_post_postController__WEBPACK_IMPORTED_MODULE_3__[\"default\"])\r\n\r\n\r\n\r\napp.listen(3000, ()=> console.log(`ONLINE http://localhost:3000`))\n\n//# sourceURL=webpack://nodejs-express-exemplos/./src/index.js?");
 
 /***/ }),
 
@@ -36,7 +36,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
   \********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var express__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! express */ \"express\");\n/* harmony import */ var express__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(express__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _userService__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./userService */ \"./src/modules/user/userService.js\");\n\r\n\r\n\r\n\r\nconst router = (0,express__WEBPACK_IMPORTED_MODULE_0__.Router)()\r\n\r\nrouter.post('/signup', (req, res) => {\r\n    try {\r\n        const answer = (0,_userService__WEBPACK_IMPORTED_MODULE_1__.signup)(req.body)\r\n        res.send(answer)\r\n    } catch (err) {\r\n        if (err.message === 'email_existente')\r\n            return res.status(400).send(err.message)\r\n        res.status(500).send(err.message)\r\n    }\r\n    \r\n})\r\n\r\nrouter.post('/login', (req, res) => {\r\n    res.send('LOGIN /')\r\n})\r\n\r\n\r\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (router);\n\n//# sourceURL=webpack://nodejs-express-exemplos/./src/modules/user/userController.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var express__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! express */ \"express\");\n/* harmony import */ var express__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(express__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _userService__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./userService */ \"./src/modules/user/userService.js\");\n\r\n\r\n\r\n\r\nconst AUTH_COOKIE_NAME = 'authorization'\r\n\r\nconst router = (0,express__WEBPACK_IMPORTED_MODULE_0__.Router)()\r\n\r\nrouter.post('/signup', (req, res) => {\r\n    try {\r\n        const token = (0,_userService__WEBPACK_IMPORTED_MODULE_1__.signup)(req.body)\r\n        res.cookie(AUTH_COOKIE_NAME, token).status(201).send()\r\n    } catch (err) {\r\n        if (err.message === 'email_existente')\r\n            return res.status(400).send(err.message)\r\n        res.status(500).send(err.message)\r\n    }\r\n    \r\n})\r\n\r\nrouter.post('/login', (req, res) => {\r\n    try {\r\n        const token = (0,_userService__WEBPACK_IMPORTED_MODULE_1__.login)(req.body)\r\n        res.cookie(AUTH_COOKIE_NAME, token).status(200).send()\r\n    } catch (err) {\r\n        if (err.message === 'email_nao_encontrado' || err.message === 'senha_incorreta')\r\n            return res.status(400).send(err.message)\r\n        res.status(500).send()\r\n    }\r\n})\r\n\r\n\r\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (router);\n\n//# sourceURL=webpack://nodejs-express-exemplos/./src/modules/user/userController.js?");
 
 /***/ }),
 
@@ -46,7 +46,17 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
   \*****************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"signup\": () => (/* binding */ signup)\n/* harmony export */ });\nlet users = []\r\n\r\nconst getUserByEmail = (searchEmail) => \r\n    users.find((obj) => obj.email === searchEmail)\r\n\r\n\r\nconst signup = (data) => {\r\n    if (getUserByEmail(data.email)) throw new Error('email_existente')\r\n        \r\n    users.push(data)\r\n    return true\r\n    \r\n}\n\n//# sourceURL=webpack://nodejs-express-exemplos/./src/modules/user/userService.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"signup\": () => (/* binding */ signup),\n/* harmony export */   \"login\": () => (/* binding */ login)\n/* harmony export */ });\n/* harmony import */ var jsonwebtoken__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jsonwebtoken */ \"jsonwebtoken\");\n/* harmony import */ var jsonwebtoken__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jsonwebtoken__WEBPACK_IMPORTED_MODULE_0__);\n\r\n\r\nlet users = []\r\nconst generateAccessToken = (data) => (0,jsonwebtoken__WEBPACK_IMPORTED_MODULE_0__.sign)(data, 'secret')\r\n\r\nconst getUserByEmail = (searchEmail) => \r\n    users.find((obj) => obj.email === searchEmail)\r\n\r\n\r\nconst signup = (data) => {\r\n    if (getUserByEmail(data.email)) throw new Error('email_existente')\r\n        \r\n    users.push(data)\r\n    return generateAccessToken({ email: data.email })\r\n}\r\n\r\nconst login = (data) => { \r\n    const user = getUserByEmail(data.email)\r\n    if (!user) throw new Error('email_nao_encontrado')\r\n    \r\n    if (user.password !== data.password) throw new Error('senha_incoreeta')\r\n    \r\n    return generateAccessToken({ email: data.email })\r\n}\n\n//# sourceURL=webpack://nodejs-express-exemplos/./src/modules/user/userService.js?");
+
+/***/ }),
+
+/***/ "cookie-parser":
+/*!********************************!*\
+  !*** external "cookie-parser" ***!
+  \********************************/
+/***/ ((module) => {
+
+module.exports = require("cookie-parser");
 
 /***/ }),
 
@@ -57,6 +67,16 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /***/ ((module) => {
 
 module.exports = require("express");
+
+/***/ }),
+
+/***/ "jsonwebtoken":
+/*!*******************************!*\
+  !*** external "jsonwebtoken" ***!
+  \*******************************/
+/***/ ((module) => {
+
+module.exports = require("jsonwebtoken");
 
 /***/ })
 
